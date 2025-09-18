@@ -3,10 +3,7 @@
 Career Guru is an AI-powered prototype that acts as a personalized career mentor 🧑‍💻.
 It helps students and professionals build their profiles, explore skills, access curated resources, follow AI-generated roadmaps, and prepare for interviews — all in one place! 🎯
 
-📸 Demo & Screenshots
-
-Add your screenshots or GIFs here for a better showcase!
-Example:
+📸 Demo 
 
 🏠 Landing Page
 
@@ -99,7 +96,6 @@ Open index.html in your browser 🌐
 
 Sign up → Fill profile → Explore dashboard → Try roadmap & chat! 🎉
 
-
 🔑 How Data Works
 
 Profile data is saved locally via localStorage.
@@ -107,7 +103,6 @@ Profile data is saved locally via localStorage.
 Backend handles AI-powered chat and mock interviews using OpenAI API.
 
 This keeps the app lightweight while providing real AI support.
-
 
 🎯 Future Improvements
 
@@ -119,7 +114,6 @@ This keeps the app lightweight while providing real AI support.
 
 🎓 Integration with real MOOC platforms (Coursera, Udemy, edX) for direct enrollment
 
-
 🤝 Contributing
 
 Contributions are welcome! 💡
@@ -130,12 +124,10 @@ Create a feature branch
 
 Submit a PR 🚀
 
-
 📜 License
 
 This project is licensed under the MIT License 📝
 
-
 👨‍💻 Team
 
-Made by Quantaum Hackers
+Made with ❤️ and ☕ during a hackathon! ✨
