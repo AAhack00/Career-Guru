@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>GuruAI — Career Chatbot</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body { background: linear-gradient(180deg, #000000 0%, #0f172a 60%, #07103a 100%); }
+    .chat-card { background: rgba(0,0,0,0.55); border-radius: 12px; box-shadow: 0 8px 30px rgba(2,6,23,0.6); }
+    .bot-msg { background: linear-gradient(90deg, rgba(59,130,246,0.12), rgba(99,102,241,0.08)); border-radius: 10px; padding: 12px; }
+    .user-msg { background: rgba(255,255,255,0.06); border-radius: 10px; padding: 12px; text-align: right; }
+    .glow-btn { transition: transform .12s ease, box-shadow .12s ease; }
+    .glow-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(99,102,241,0.18); }
+    .typing-dot { display:inline-block; width:6px; height:6px; margin:0 2px; border-radius:9999px; background:rgba(255,255,255,0.7); animation: blink 1s infinite; }
+    .typing-dot:nth-child(2){ animation-delay: .15s }
+    .typing-dot:nth-child(3){ animation-delay: .3s }
+    @keyframes blink { 0%, 80%, 100% { opacity: .15 } 40% { opacity: 1 } }
+  </style>
+</head>
+<body class="min-h-screen text-white font-inter">
+  <!-- Top nav -->
+  <nav class="flex justify-between items-center px-10 py-5 bg-black bg-opacity-40 backdrop-blur-lg">
+    <div class="flex items-center space-x-3">
+      <i data-lucide="brain-circuit" class="text-cyan-400 w-8 h-8"></i>
+      <h1 class="text-2xl font-extrabold tracking-wide">GuruAI</h1>
+      <span class="ml-4 text-sm text-gray-300">Career chatbot & Mock interview coach</span>
+    </div>
+    <div class="flex items-center space-x-4">
+      <button onclick="window.location.href='Dashboard Page.html'" class="px-4 py-2 bg-red-600 rounded-lg glow-btn">Back</button>
+    </div>
+  </nav>
+
+  <main class="max-w-4xl mx-auto p-8">
+    <div class="chat-card p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-bold">Career Chat — Interview Prep</h2>
+        <div class="flex items-center gap-3">
+          <button id="quickTipsBtn" class="px-3 py-1 bg-green-500 rounded-md text-sm glow-btn">Quick Tips</button>
+          <button id="startInterviewBtn" class="px-3 py-1 bg-purple-600 rounded-md text-sm glow-btn">Start Mock Interview</button>
+        </div>
+      </div>
+
+      <!-- chat area -->
+      <div id="chatArea" class="h-96 overflow-y-auto space-y-4 p-4 rounded-lg border border-white/5" style="background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent)">
+      </div>
+
+      <!-- input row -->
+      <div class="mt-4 grid grid-cols-12 gap-3 items-center">
+        <input id="userInput" type="text" placeholder="Type your answer or message here..." class="col-span-10 p-3 bg-black bg-opacity-40 rounded-lg focus:outline-none" />
+        <button id="sendBtn" class="col-span-2 px-4 py-3 bg-indigo-600 rounded-lg glow-btn">Send</button>
+      </div>
+
+      <!-- status -->
+      <div class="mt-3 text-sm text-gray-300 flex justify-between items-center">
+        <div id="statusText">To <strong>Start Chatbot</strong> — click <strong>Start Mock Interview</strong> or chat freely.</div>
+        <div class="text-right">
+          <span id="sessionSummary" class="text-gray-400"></span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    lucide.createIcons();
+
+    // State
+    const state = { step:'idle', interview:{ questions:[], currentIndex:-1, score:0, asked:0 }, freeChatCount:0 };
+
+    const INTERVIEW_QS = [
+      {q:"Explain bias vs variance tradeoff in ML.",keywords:["bias","variance","overfit","underfit"]},
+      {q:"Describe gradient descent in simple words.",keywords:["gradient","descent","optimizer","learning rate"]},
+      {q:"What are REST APIs?",keywords:["rest","endpoint","http","get","post"]},
+      {q:"Explain event loop in JavaScript.",keywords:["event loop","callback","async","queue"]},
+      {q:"What is Docker?",keywords:["docker","container","image","isolation"]},
+      {q:"Differentiate IaaS, PaaS, SaaS.",keywords:["iaas","paas","saas"]},
+      {q:"Explain OSI 7-layer model.",keywords:["network","osi","layer"]},
+      {q:"What is SQL Injection?",keywords:["sql","injection","owasp"]},
+      {q:"Explain TLS/SSL.",keywords:["tls","ssl","encryption"]},
+      {q:"What are microservices?",keywords:["microservice","api","scalable"]},
+      {q:"Explain responsive web design.",keywords:["responsive","media query","flex","grid"]},
+      {q:"What is Kubernetes?",keywords:["kubernetes","pods","cluster"]},
+      {q:"Explain caching.",keywords:["cache","latency","performance"]},
+      {q:"What are hash functions?",keywords:["hash","integrity","unique"]},
+      {q:"Explain indexes in databases.",keywords:["index","db","query","performance"]},
+      {q:"What is normalization?",keywords:["database","normalization","redundancy"]},
+      {q:"Explain CAP theorem.",keywords:["consistency","availability","partition"]},
+      {q:"What is a firewall?",keywords:["firewall","network","packet"]},
+      {q:"Explain polymorphism.",keywords:["oop","polymorphism","inheritance"]},
+      {q:"What is recursion?",keywords:["recursion","function","stack"]},
+      {q:"What is Big-O complexity?",keywords:["complexity","big-o","runtime"]},
+      {q:"Explain heap vs stack.",keywords:["heap","stack","memory"]},
+      {q:"What is Git branching?",keywords:["git","branch","merge"]},
+      {q:"Explain agile methodology.",keywords:["agile","sprint","scrum"]},
+      {q:"What is CI/CD?",keywords:["ci","cd","pipeline","deploy"]},
+      {q:"Explain JWT.",keywords:["jwt","token","auth"]},
+      {q:"What is cloud IAM?",keywords:["iam","identity","role"]},
+      {q:"Explain unit testing.",keywords:["unit test","mock","assert"]},
+      {q:"What is load balancing?",keywords:["load balancer","traffic","server"]},
+      {q:"Explain API Gateway.",keywords:["api","gateway","routing"]}
+    ];
+
+    const QUICK_TIPS = [
+      "Practice Python ML libraries like NumPy and Pandas.",
+      "Understand evaluation metrics like F1-score and AUC.",
+      "Build small end-to-end projects and upload to GitHub.",
+      "Master modern JS (ES6+) and DOM concepts.",
+      "Deploy 2–3 polished web projects online.",
+      "Learn Docker and Kubernetes basics.",
+      "Understand IAM and cloud networking.",
+      "Revise OSI model and TCP/IP fundamentals.",
+      "Practice solving SQL queries and optimization.",
+      "Learn React hooks and state management.",
+      "Explore cybersecurity with OWASP Top 10.",
+      "Use Git daily to practice branching/merging.",
+      "Study data structures & algorithms regularly.",
+      "Try CTF challenges for security practice.",
+      "Revise OOP concepts with coding examples.",
+      "Follow industry blogs for updates.",
+      "Contribute to open-source projects.",
+      "Learn CI/CD tools like Jenkins or GitHub Actions.",
+      "Understand caching & performance tuning.",
+      "Read system design case studies.",
+      "Practice behavioral interview questions.",
+      "Improve problem-solving speed on LeetCode.",
+      "Focus on clean code and naming practices.",
+      "Learn API testing tools like Postman.",
+      "Write technical blogs to showcase skills.",
+      "Understand virtualization vs containers.",
+      "Implement unit tests in projects.",
+      "Use cloud free tiers for practice.",
+      "Track new features in programming languages.",
+      "Always document your projects."
+    ];
+
+    const RANDOM_FREECHAT_RESPONSES = [
+      "That sounds interesting, tell me more.","Have you considered turning that into a project?",
+      "Nice idea! You could write it down in a learning journal.","Consistency matters more than speed, keep going.",
+      "That connects well with data structures fundamentals.","Try linking this concept to a real-world example.",
+      "Sounds good, want me to suggest a resource for it?","Practice explaining that to someone else, it will stick better.",
+      "Great, that could be a resume bullet point if done properly.","Interesting angle — research papers might help here.",
+      "Build a small prototype, that will boost your skills.","That reminds me of how senior devs structure projects.",
+      "Think about scalability when you learn this.","That’s useful for both backend and frontend roles.",
+      "Great! It fits well into system design prep.","That’s how developers build confidence.",
+      "A small consistent project beats a big abandoned one.","That’s the mindset employers love to see.",
+      "Link your idea to performance optimization.","That connects to API design fundamentals.",
+      "Always practice explaining in simple words.","Yes, recruiters often check GitHub for such work.",
+      "That’s the type of curiosity that leads to innovation.","Good step — add error handling as well.",
+      "Learning by teaching is very effective — try it.","Solid! It can also help in hackathons.",
+      "That’s definitely resume-worthy once completed.","Focus on depth in one tool first, then spread out.",
+      "Companies value hands-on demos more than theory.","Excellent point — document your learnings.",
+      "Add measurable outcomes if you mention this.","This will help in coding rounds indirectly.",
+      "That’s a great step for long-term growth.","Want me to suggest a roadmap for this?",
+      "That will impress in technical interviews.","Sounds like you’re thinking like an engineer.",
+      "That’s a strong mindset for problem-solving.","This connects to optimization strategies.",
+      "It could also be used for automation tasks.","That could be shown as a live demo project.",
+      "That’s aligned with industry expectations.","That is an emerging trend in tech.",
+      "Companies look for that practical mindset.","That’s great — it shows adaptability.",
+      "That’s really good, build on it further.","It connects well with scaling concepts.",
+      "That can evolve into a strong portfolio project.","That aligns with real-world case studies."
+    ];
+
+    // Chat helpers
+    const chatArea=document.getElementById('chatArea');
+    function addBotMessage(html){const d=document.createElement('div');d.className='bot-msg text-sm';d.innerHTML=html;chatArea.appendChild(d);chatArea.scrollTop=chatArea.scrollHeight;}
+    function addUserMessage(txt){const d=document.createElement('div');d.className='user-msg text-sm';d.innerText=txt;chatArea.appendChild(d);chatArea.scrollTop=chatArea.scrollHeight;}
+
+    // Free Chat
+    function handleFreeChat(){state.freeChatCount++;if(state.freeChatCount===1){addBotMessage("Hello 👋 Glad you started chatting with me.");}
+      else if(state.freeChatCount<=15){const r=RANDOM_FREECHAT_RESPONSES[Math.floor(Math.random()*RANDOM_FREECHAT_RESPONSES.length)];addBotMessage(r);}
+      else{addBotMessage("<strong>Don’t waste time with chat.</strong> Go to resources and learn new things.");}}
+
+    // Quick Tips
+    function showQuickTips(){const sel=[...QUICK_TIPS].sort(()=>0.5-Math.random()).slice(0,7);addBotMessage("<strong>Quick Tips:</strong><ul class='mt-2'>"+sel.map(t=>"<li>• "+t+"</li>").join('')+"</ul>");}
+
+    // Mock Interview
+    function startMockInterview(){state.interview.questions=[...INTERVIEW_QS].sort(()=>0.5-Math.random()).slice(0,10);state.interview.currentIndex=-1;state.interview.score=0;state.step='interview';askNextQ();}
+    function askNextQ(){state.interview.currentIndex++;if(state.interview.currentIndex>=state.interview.questions.length){addBotMessage("Interview finished! Score: "+state.interview.score+"/"+(state.interview.questions.length*2));state.step='idle';return;}
+      const q=state.interview.questions[state.interview.currentIndex].q;addBotMessage("<strong>Q"+(state.interview.currentIndex+1)+":</strong> "+q);}
+    function evalAns(ans){const qobj=state.interview.questions[state.interview.currentIndex];let pts=0;for(let k of qobj.keywords){if(ans.toLowerCase().includes(k)){pts++;if(pts>=2)break;}}
+      state.interview.score+=pts;if(pts===0){addBotMessage("❌ Missed key points. Correct answer should include: "+qobj.keywords.join(", "));}
+      else if(pts===1){addBotMessage("⚠ Partial answer. Include also: "+qobj.keywords.join(", "));}
+      else{addBotMessage("✅ Good answer, you covered important terms.");}
+      setTimeout(()=>askNextQ(),800);}
+
+    // Input events
+    document.getElementById('sendBtn').onclick=()=>{const val=document.getElementById('userInput').value.trim();if(!val)return;addUserMessage(val);document.getElementById('userInput').value="";
+      if(state.step==='interview'){evalAns(val);}else{handleFreeChat();}};
+    document.getElementById('userInput').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('sendBtn').click();});
+    document.getElementById('quickTipsBtn').onclick=showQuickTips;
+    document.getElementById('startInterviewBtn').onclick=startMockInterview;
+  </script>
+</body>
+</html>

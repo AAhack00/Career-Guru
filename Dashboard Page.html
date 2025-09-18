@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Career Guru - Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    /* Glowing effect for bars */
+    .skill-bar div, .job-bar div {
+      transition: all 0.3s ease;
+    }
+
+    .skill-bar div:hover, .job-bar div:hover {
+      box-shadow: 0 0 10px 2px rgba(255,255,255,0.7);
+      transform: scaleY(1.1);
+    }
+
+    /* AI Recommendation glowing effect */
+    .ai-rec {
+      padding: 10px;
+      border-radius: 8px;
+      background: linear-gradient(90deg, #1e3a8a, #3b82f6);
+      color: #fff;
+      font-weight: bold;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .ai-rec:hover {
+      background: linear-gradient(90deg, #f97316, #facc15);
+      box-shadow: 0 0 15px 3px rgba(255,255,255,0.7);
+      transform: scale(1.05);
+    }
+
+    /* Sidebar styles */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      right: -300px;
+      height: 100%;
+      width: 250px;
+      background: linear-gradient(180deg, #0f172a, #1e293b);
+      box-shadow: -4px 0 20px rgba(0,0,0,0.6);
+      transition: right 0.4s ease;
+      z-index: 50;
+      padding: 2rem 1rem;
+    }
+    .sidebar.active {
+      right: 0;
+    }
+    .sidebar ul li {
+      margin-bottom: 1rem;
+    }
+    .sidebar ul li button {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      text-align: left;
+      font-weight: bold;
+      background: #1e293b;
+      color: #fff;
+      transition: all 0.3s ease;
+    }
+    .sidebar ul li button:hover {
+      background: linear-gradient(90deg, #3b82f6, #1e40af);
+      box-shadow: 0 0 12px #3b82f6;
+      transform: scale(1.05);
+    }
+
+    /* Hamburger menu */
+    .hamburger {
+      width: 30px;
+      height: 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+      z-index: 60;
+    }
+    .hamburger span {
+      display: block;
+      height: 3px;
+      width: 100%;
+      background: white;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 6px);
+    }
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -6px);
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-black via-gray-900 to-blue-900 min-h-screen text-white">
+
+  <!-- Navbar (Logo + Hamburger) -->
+  <nav class="flex justify-between items-center px-10 py-5 bg-black bg-opacity-40 backdrop-blur-lg relative z-50">
+    <div class="flex items-center space-x-3">
+      <i data-lucide="brain-circuit" class="text-blue-400 w-8 h-8"></i>
+      <h1 class="text-2xl font-extrabold tracking-wide">Career Guru</h1>
+    </div>
+    <div class="hamburger" id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </nav>
+
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <ul>
+      <li><button onclick="openChatbot()">GuruAI</button></li>
+      <li><button onclick="openRoadmap()">Growth Map</button></li>
+      <li><button onclick="openLearnDesk()">Learn Desk</button></li>
+      <li><button onclick="updateProfile()">Update Profile</button></li>
+      <li><button onclick="logout()">Logout</button></li>
+    </ul>
+  </div>
+
+  <!-- Dashboard Content -->
+  <div class="px-10 py-10">
+    <h2 id="welcomeText" class="text-4xl font-bold mb-6">Welcome Back 👋</h2>
+
+    <!-- Top Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+      <!-- CGPA -->
+      <div class="bg-black bg-opacity-50 p-6 rounded-xl shadow-xl hover:scale-105 transition">
+        <div class="flex items-center space-x-3 mb-3">
+          <i data-lucide="bar-chart" class="text-blue-400 w-6 h-6"></i>
+          <h3 class="text-xl font-semibold">CGPA / Score</h3>
+        </div>
+        <p id="cgpaScore" class="text-3xl font-bold text-blue-400">-</p>
+      </div>
+
+      <!-- Achievements -->
+      <div class="bg-black bg-opacity-50 p-6 rounded-xl shadow-xl hover:scale-105 transition">
+        <div class="flex items-center space-x-3 mb-3">
+          <i data-lucide="trophy" class="text-green-400 w-6 h-6"></i>
+          <h3 class="text-xl font-semibold">Achievements</h3>
+        </div>
+        <p id="achievementsCount" class="text-3xl font-bold text-green-400">0</p>
+        <ul id="achievementsList" class="list-disc list-inside text-gray-300 text-sm mt-3 space-y-1"></ul>
+      </div>
+
+      <!-- Resources Completed -->
+      <div class="bg-black bg-opacity-50 p-6 rounded-xl shadow-xl hover:scale-105 transition">
+        <div class="flex items-center space-x-3 mb-3">
+          <i data-lucide="book-open" class="text-yellow-400 w-6 h-6"></i>
+          <h3 class="text-xl font-semibold">Resources Completed</h3>
+        </div>
+        <p id="resourcesCompleted" class="text-3xl font-bold text-yellow-400">0</p>
+      </div>
+    </div>
+
+    <!-- Job Fit Score -->
+    <div class="bg-black bg-opacity-50 p-6 rounded-xl shadow-xl mb-10">
+      <div class="flex items-center space-x-3 mb-4">
+        <i data-lucide="briefcase" class="text-cyan-400 w-6 h-6"></i>
+        <h3 class="text-xl font-semibold">Job Fit Score</h3>
+      </div>
+      <div id="jobFitScores" class="space-y-4"></div>
+    </div>
+
+    <!-- Skills Coverage -->
+    <div class="bg-black bg-opacity-50 p-6 rounded-xl shadow-xl mb-10">
+      <div class="flex items-center space-x-3 mb-4">
+        <i data-lucide="layers" class="text-orange-400 w-6 h-6"></i>
+        <h3 class="text-xl font-semibold">Skills Coverage</h3>
+      </div>
+      <div id="skillsCoverage" class="space-y-4"></div>
+    </div>
+
+    <!-- Recommendations -->
+    <div class="bg-black bg-opacity-50 p-6 rounded-xl shadow-xl">
+      <div class="flex items-center space-x-3 mb-4">
+        <i data-lucide="lightbulb" class="text-blue-400 w-6 h-6"></i>
+        <h3 class="text-xl font-semibold">AI Career Recommendations</h3>
+      </div>
+      <ul id="recommendations" class="space-y-2"></ul>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    const hamburger = document.getElementById("hamburger");
+    const sidebar = document.getElementById("sidebar");
+
+    // Toggle sidebar on hamburger click
+    hamburger.addEventListener("click", () => {
+      hamburger.classList.toggle("active");
+      sidebar.classList.toggle("active");
+    });
+
+    // Close sidebar when clicking outside
+    document.addEventListener("click", (event) => {
+      if (sidebar.classList.contains("active") && !sidebar.contains(event.target) && !hamburger.contains(event.target)) {
+        sidebar.classList.remove("active");
+        hamburger.classList.remove("active");
+      }
+    });
+
+    function getRandomInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function logout() {
+      localStorage.removeItem("currentUser");
+      window.location.href = "Landing Page.html";
+    }
+
+    function openLearnDesk() {
+      window.location.href = "Resoursce Page.html";
+    }
+
+    function openRoadmap() {
+      window.location.href = "Roadmap Page.html";
+    }
+
+    function openChatbot() {
+      window.location.href = "AI-Chatbot Page.html";
+    }
+
+    function updateProfile() {
+      window.location.href = "Profile Page.html";
+    }
+
+    window.onload = () => {
+      const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+      if (!currentUser) {
+        alert("Please login first!");
+        window.location.href = "Landing Page.html";
+        return;
+      }
+
+      const profiles = JSON.parse(localStorage.getItem("profiles")) || {};
+      const profileData = profiles[currentUser.email];
+      if (!profileData) {
+        alert("Profile not found! Please complete your profile.");
+        window.location.href = "Profile Page.html";
+        return;
+      }
+
+      // Welcome text
+      document.getElementById("welcomeText").textContent = `Welcome Back, ${profileData.name} 👋`;
+
+      // CGPA
+      document.getElementById("cgpaScore").textContent = profileData.cgpa || "-";
+
+      // Achievements
+      const achievementsList = document.getElementById("achievementsList");
+      achievementsList.innerHTML = "";
+      if (profileData.achievements && profileData.achievements.length > 0) {
+        document.getElementById("achievementsCount").textContent = profileData.achievements.length;
+        profileData.achievements.forEach(a => {
+          let li = document.createElement("li");
+          li.textContent = a;
+          achievementsList.appendChild(li);
+        });
+      }
+
+      // Resources Completed
+      document.getElementById("resourcesCompleted").textContent = profileData.resourcesCompleted || "0";
+
+      // Skills Coverage
+      const skillsDiv = document.getElementById("skillsCoverage");
+      skillsDiv.innerHTML = "";
+      const skillColors = ["bg-blue-500","bg-green-400","bg-yellow-400","bg-pink-500","bg-purple-500","bg-cyan-400","bg-orange-400"];
+      if (profileData.skills && profileData.skills.length > 0) {
+        profileData.skills.forEach((skill, idx) => {
+          let percent = getRandomInt(30, 90);
+          let colorClass = skillColors[idx % skillColors.length];
+          let wrapper = document.createElement("div");
+          wrapper.innerHTML = `
+            <p class="font-semibold">${skill}</p>
+            <div class="w-full bg-gray-800 rounded-full h-4 skill-bar">
+              <div class="${colorClass} h-4 rounded-full" style="width: ${percent}%;"></div>
+            </div>
+            <p class="text-gray-400 text-sm mt-1">${percent}% Covered</p>
+          `;
+          skillsDiv.appendChild(wrapper);
+        });
+      }
+
+      // Job Fit Score
+      const jobDomains = ["AI & ML", "Web Development", "Data Science", "Cloud Computing", "Cybersecurity", "Software Engineering"];
+      const jobDiv = document.getElementById("jobFitScores");
+      jobDiv.innerHTML = "";
+      const jobColors = ["bg-green-500","bg-blue-400","bg-yellow-400","bg-pink-500","bg-purple-400","bg-cyan-400"];
+      jobDomains.forEach((domain, idx) => {
+        let percent = getRandomInt(30, 90);
+        let colorClass = jobColors[idx % jobColors.length];
+        let wrapper = document.createElement("div");
+        wrapper.innerHTML = `
+          <p class="font-semibold">${domain}</p>
+          <div class="w-full bg-gray-800 rounded-full h-4 job-bar">
+            <div class="${colorClass} h-4 rounded-full" style="width: ${percent}%;"></div>
+          </div>
+          <p class="text-gray-400 text-sm mt-1">${percent}% Fit</p>
+        `;
+        jobDiv.appendChild(wrapper);
+      });
+
+      // AI Recommendations
+      const allRecs = [
+        "Explore AI & Machine Learning projects",
+        "Contribute to open-source development",
+        "Build a personal portfolio website",
+        "Participate in hackathons",
+        "Earn cloud certifications (AWS, GCP, Azure)",
+        "Work on Data Science case studies",
+        "Practice coding on LeetCode/HackerRank",
+        "Learn advanced SQL and databases",
+        "Contribute to GitHub repositories",
+        "Explore Cybersecurity basics",
+        "Take part in Kaggle competitions",
+        "Learn Docker & Kubernetes",
+        "Start a blog on technical topics",
+        "Work on real-world freelance projects",
+        "Build mobile apps with Flutter/React Native",
+        "Experiment with Generative AI (Chatbots, Image Models)",
+        "Publish research papers or tech articles on Medium/LinkedIn",
+        "Build end-to-end full-stack projects with AI integration",
+        "Join coding communities (Discord, Reddit, Stack Overflow)",
+        "Work on open-source AI datasets for training models",
+        "Learn DevOps tools for deploying ML models (MLOps)",
+        "Create YouTube tutorials or mini-courses on coding/AI",
+        "Collaborate on group projects via GitHub/Notion",
+        "Explore blockchain + AI use cases (Web3 + ML)",
+        "Apply for virtual internships or research assistantships"
+      ];
+
+      const recDiv = document.getElementById("recommendations");
+      recDiv.innerHTML = "";
+
+      let userRecsKey = "userRecs_" + currentUser.email;
+      let randomRecs = JSON.parse(localStorage.getItem(userRecsKey));
+
+      if (!randomRecs) {
+        randomRecs = allRecs.sort(() => 0.5 - Math.random()).slice(0, 5);
+        localStorage.setItem(userRecsKey, JSON.stringify(randomRecs));
+      }
+
+      randomRecs.forEach(r => {
+        let li = document.createElement("li");
+        li.textContent = r;
+        li.classList.add("ai-rec");
+        recDiv.appendChild(li);
+      });
+    }
+  </script>
+</body>
+</html>

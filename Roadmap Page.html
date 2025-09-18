@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Career Guru - Roadmap</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body {
+      background: linear-gradient(135deg, #000000, #0f172a, #07103a);
+      min-height: 100vh;
+      color: white;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+      padding-bottom: 150px; /* Extra bottom space for last card */
+    }
+
+    .roadmap-container {
+      position: relative;
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      height: 1100px; /* total height of roadmap */
+    }
+
+    .roadmap-line {
+      position: absolute;
+      left: 50%;
+      top: 50px;
+      width: 6px;
+      height: calc(100% - 100px); /* leave space top/bottom */
+      background: linear-gradient(to bottom, #3b82f6, #60a5fa, #93c5fd);
+      border-radius: 3px;
+      box-shadow: 0 0 20px #3b82f6, 0 0 40px #60a5fa, 0 0 60px #93c5fd;
+      transform: translateX(-50%);
+      z-index: 1;
+    }
+
+    .roadmap-spot {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      color: white;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+      z-index: 10;
+    }
+
+    .roadmap-spot:hover {
+      transform: scale(1.5);
+      box-shadow: 0 0 20px currentColor, 0 0 40px currentColor, 0 0 60px currentColor;
+      z-index: 20;
+    }
+
+    /* Spot colors */
+    .spot-1 { background: #f87171; border: 3px solid #f87171; }
+    .spot-2 { background: #fbbf24; border: 3px solid #fbbf24; }
+    .spot-3 { background: #34d399; border: 3px solid #34d399; }
+    .spot-4 { background: #60a5fa; border: 3px solid #60a5fa; }
+    .spot-5 { background: #a78bfa; border: 3px solid #a78bfa; }
+    .spot-6 { background: #f472b6; border: 3px solid #f472b6; }
+    .spot-7 { background: #facc15; border: 3px solid #facc15; }
+    .spot-8 { background: #22d3ee; border: 3px solid #22d3ee; }
+    .spot-9 { background: #f87171; border: 3px solid #f87171; }
+    .spot-10 { background: #3b82f6; border: 3px solid #3b82f6; }
+
+    .roadmap-card-popup {
+      position: absolute;
+      border-radius: 1rem;
+      padding: 15px;
+      width: 220px; /* smaller width */
+      max-width: 80vw;
+      box-shadow: 0 0 15px rgba(0,0,0,0.7);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      z-index: 30;
+      font-size: 0.85rem;
+      line-height: 1.3;
+      color: #f1f5f9;
+    }
+
+    .roadmap-card-popup h4 {
+      font-weight: bold;
+      margin-bottom: 4px;
+      font-size: 1rem;
+      color: #111827; /* Dark heading text */
+    }
+
+    /* Card gradient colors */
+    .card-1 { background: linear-gradient(135deg, #f87171, #fca5a5); box-shadow: 0 0 15px #f87171,0 0 30px #fca5a5;}
+    .card-2 { background: linear-gradient(135deg, #fbbf24, #fde68a); box-shadow: 0 0 15px #fbbf24,0 0 30px #fde68a;}
+    .card-3 { background: linear-gradient(135deg, #34d399, #6ee7b7); box-shadow: 0 0 15px #34d399,0 0 30px #6ee7b7;}
+    .card-4 { background: linear-gradient(135deg, #60a5fa, #93c5fd); box-shadow: 0 0 15px #60a5fa,0 0 30px #93c5fd;}
+    .card-5 { background: linear-gradient(135deg, #a78bfa, #d8b4fe); box-shadow: 0 0 15px #a78bfa,0 0 30px #d8b4fe;}
+    .card-6 { background: linear-gradient(135deg, #f472b6, #f9a8d4); box-shadow: 0 0 15px #f472b6,0 0 30px #f9a8d4;}
+    .card-7 { background: linear-gradient(135deg, #facc15, #fef08a); box-shadow: 0 0 15px #facc15,0 0 30px #fef08a;}
+    .card-8 { background: linear-gradient(135deg, #22d3ee, #67e8f9); box-shadow: 0 0 15px #22d3ee,0 0 30px #67e8f9;}
+    .card-9 { background: linear-gradient(135deg, #f87171, #fca5a5); box-shadow: 0 0 15px #f87171,0 0 30px #fca5a5;}
+    .card-10 { background: linear-gradient(135deg, #3b82f6, #60a5fa); box-shadow: 0 0 15px #3b82f6,0 0 30px #60a5fa;}
+
+    @media (max-width: 768px) {
+      .roadmap-container { height: 1400px; }
+      .roadmap-card-popup { width: 180px; }
+      .roadmap-spot { width: 35px; height: 35px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="flex justify-between items-center px-10 py-5 bg-black bg-opacity-40 backdrop-blur-lg">
+    <div class="flex items-center space-x-3">
+      <i data-lucide="brain-circuit" class="text-blue-400 w-8 h-8"></i>
+      <h1 class="text-2xl font-extrabold tracking-wide">Career Guru</h1>
+    </div>
+    <button onclick="window.location.href='Dashboard Page.html'" 
+      class="bg-red-600 px-4 py-2 rounded-lg font-semibold hover:bg-blue-500 hover:scale-105 transition">Back</button>
+  </nav>
+
+  <section class="px-10 py-10">
+    <h2 class="text-4xl font-bold mb-12 text-center">🚀 AI Powered - Personalised Career Roadmap</h2>
+    
+    <div class="roadmap-container" id="roadmapContainer">
+      <div class="roadmap-line"></div>
+      <!-- Spots injected by JS -->
+    </div>
+  </section>
+
+  <script>
+    if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const container = document.getElementById('roadmapContainer');
+      const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+      const profiles = JSON.parse(localStorage.getItem('profiles') || '{}');
+      const profileData = profiles?.[currentUser?.email] || {};
+
+      const rawSkills = Array.isArray(profileData.skills)
+        ? profileData.skills
+        : (typeof profileData.skills === 'string' ? profileData.skills.split(',') : []);
+      const rawInterests = Array.isArray(profileData.interests)
+        ? profileData.interests
+        : (typeof profileData.interests === 'string' ? profileData.interests.split(',') : []);
+
+      const skills = rawSkills.map(s => s.toLowerCase().trim()).filter(Boolean);
+      const interests = rawInterests.map(i => i.toLowerCase().trim()).filter(Boolean);
+
+      function matchAny(keywords) {
+        for (const k of keywords) {
+          const kk = k.toLowerCase();
+          if (skills.some(s => s.includes(kk))) return true;
+          if (interests.some(i => i.includes(kk))) return true;
+        }
+        return false;
+      }
+
+      const roadmaps = {
+        ai: [
+          { title: 'Master Python', details: 'Learn Python thoroughly including OOP, data structures, problem-solving, and scripting. Apply in small projects and exercises.' },
+          { title: 'Math for ML', details: 'Understand Linear Algebra, Probability, Statistics, and Calculus as foundational knowledge for Machine Learning models.' },
+          { title: 'Data Analysis', details: 'Practice with NumPy, Pandas, and Matplotlib to manipulate datasets, perform analysis, and visualize insights effectively.' },
+          { title: 'ML Basics', details: 'Learn Regression, Classification, and Clustering algorithms. Understand concepts and implement small ML projects.' },
+          { title: 'Deep Learning', details: 'Explore Neural Networks, CNNs for images, RNNs for sequences, and practice building deep learning models.' },
+          { title: 'NLP & CV', details: 'Study Natural Language Processing, Computer Vision, and apply models for text analysis, speech, and images.' },
+          { title: 'Projects', details: 'Work on real-world AI/ML projects, contribute to GitHub, and showcase results in your portfolio.' },
+          { title: 'Deployment', details: 'Learn how to deploy ML models using Flask, Docker, and REST APIs for real-world usage.' },
+          { title: 'Research', details: 'Read research papers, stay updated with AI trends, and try publishing small research or blog posts.' },
+          { title: 'Career Prep', details: 'Prepare for interviews, participate in Kaggle competitions, and apply for internships or AI jobs.' }
+        ],
+        web: [
+          { title: 'HTML & CSS', details: 'Learn HTML structure, CSS styling, Flexbox, and Grid layouts. Practice by creating responsive web pages.' },
+          { title: 'JavaScript', details: 'Master JavaScript fundamentals, ES6+, DOM manipulation, events, and dynamic page behavior.' },
+          { title: 'Responsive Design', details: 'Use media queries, Flexbox, and Grid to make websites responsive for all devices.' },
+          { title: 'Frontend Framework', details: 'Learn React or Vue basics, components, props, state, and hooks to build modern UIs.' },
+          { title: 'State Management', details: 'Understand Redux or Context API to manage global state in large applications.' },
+          { title: 'Backend', details: 'Learn Node.js and Express to create APIs, handle routes, and manage backend logic.' },
+          { title: 'Databases', details: 'Understand SQL and NoSQL databases. Learn CRUD operations and data modeling.' },
+          { title: 'Auth & Security', details: 'Implement authentication with JWT or OAuth, and understand basic web security principles.' },
+          { title: 'Deployment', details: 'Deploy full-stack apps on platforms like Vercel, Netlify, or Heroku.' },
+          { title: 'Full-Stack Project', details: 'Build a complete project integrating frontend, backend, and database, showcasing all your skills.' }
+        ],
+        cloud: [
+          { title: 'Cloud Basics', details: 'Learn IaaS, PaaS, SaaS, and cloud concepts including scalability and resource management.' },
+          { title: 'AWS/GCP/Azure Intro', details: 'Explore cloud providers, compute, storage, and networking services.' },
+          { title: 'CLI & SDKs', details: 'Use command-line tools and SDKs to automate cloud tasks and deployments.' },
+          { title: 'Deploy Apps', details: 'Deploy applications on the cloud, manage resources and monitor performance.' },
+          { title: 'Databases on Cloud', details: 'Use RDS, CosmosDB, or cloud-based databases for real-world applications.' },
+          { title: 'Containers', details: 'Learn Docker & Kubernetes basics for containerization and orchestration.' },
+          { title: 'Serverless', details: 'Implement Lambda, Cloud Functions, and serverless workflows.' },
+          { title: 'Monitoring', details: 'Monitor applications with CloudWatch, Stackdriver, or similar tools.' },
+          { title: 'Security', details: 'Manage IAM, encryption, and cloud security best practices.' },
+          { title: 'Certification', details: 'Prepare for AWS, GCP, or Azure certifications for career advancement.' }
+        ],
+        cyber: [
+          { title: 'Networking', details: 'Understand TCP/IP, OSI model, routing, and switching fundamentals.' },
+          { title: 'OS Security', details: 'Learn Linux and Windows security basics, file permissions, and system hardening.' },
+          { title: 'Threats & Attacks', details: 'Study phishing, malware, ransomware, and social engineering attacks.' },
+          { title: 'Cryptography', details: 'Understand encryption, SSL/TLS, hashes, and secure communication.' },
+          { title: 'Web Security', details: 'Learn OWASP Top 10 vulnerabilities and prevention techniques.' },
+          { title: 'Ethical Hacking', details: 'Practice pentesting with Kali Linux and ethical hacking tools.' },
+          { title: 'Tools Practice', details: 'Use Wireshark, Metasploit, Nmap, and other cybersecurity tools effectively.' },
+          { title: 'Capture the Flag', details: 'Participate in CTF competitions and bug bounty programs.' },
+          { title: 'Certifications', details: 'Pursue CompTIA Security+, CEH, OSCP, or similar certifications.' },
+          { title: 'Career Prep', details: 'Gain practical experience through labs, internships, and security projects.' }
+        ],
+        general: [
+          { title: 'Pick a Path', details: 'Explore AI, Web, Cloud, or Cybersecurity domains and decide your focus area.' },
+          { title: 'Learn Basics', details: 'Master programming fundamentals, Git version control, and Linux basics.' },
+          { title: 'Online Courses', details: 'Take online courses from NPTEL, Coursera, or other platforms to strengthen knowledge.' },
+          { title: 'Build Projects', details: 'Start small projects and gradually build portfolio-worthy applications.' },
+          { title: 'Join Communities', details: 'Participate in hackathons, contribute to GitHub, and join tech communities.' },
+          { title: 'Portfolio', details: 'Showcase projects and skills on GitHub and LinkedIn to attract opportunities.' },
+          { title: 'Certifications', details: 'Complete free or paid certifications relevant to your field.' },
+          { title: 'Internships', details: 'Apply for internships early to gain practical experience.' },
+          { title: 'Soft Skills', details: 'Develop communication, teamwork, and problem-solving skills.' },
+          { title: 'Career Ready', details: 'Apply for jobs, attend interviews, and leverage your portfolio effectively.' }
+        ]
+      };
+
+      function generateRoadmap() {
+        if (matchAny(['python','ai','ml','machine learning'])) return roadmaps.ai;
+        if (matchAny(['web','frontend','javascript','react','html','css'])) return roadmaps.web;
+        if (matchAny(['cloud','aws','gcp','azure'])) return roadmaps.cloud;
+        if (matchAny(['cyber','security','ethical'])) return roadmaps.cyber;
+        return roadmaps.general;
+      }
+
+      const roadmap = generateRoadmap();
+
+      const totalHeight = 1000;
+      const startY = 50;
+      const spacing = totalHeight / roadmap.length;
+
+      roadmap.forEach((step, idx) => {
+        const yPos = startY + spacing * idx;
+
+        const spot = document.createElement('div');
+        spot.className = `roadmap-spot spot-${idx+1}`;
+        spot.style.top = yPos + 'px';
+        spot.style.color = 'white';
+        // alternate left/right positions
+        spot.style.left = idx % 2 === 0 ? 'calc(50% - 150px)' : 'calc(50% + 100px)';
+        spot.textContent = idx + 1;
+
+        const card = document.createElement('div');
+        card.className = `roadmap-card-popup card-${idx+1}`;
+        if (idx % 2 === 0) {
+          card.style.right = '100%';
+          card.style.transform = 'translateX(-20px)';
+        } else {
+          card.style.left = '100%';
+          card.style.transform = 'translateX(20px)';
+        }
+        card.style.top = '50%';
+        card.innerHTML = `<h4>${step.title}</h4><p>${step.details}</p>`;
+
+        spot.addEventListener('mouseenter', () => { card.style.opacity = 1; });
+        spot.addEventListener('mouseleave', () => { card.style.opacity = 0; });
+
+        spot.appendChild(card);
+        container.appendChild(spot);
+      });
+    });
+  </script>
+
+</body>
+</html>

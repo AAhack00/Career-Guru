@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Career Guru - Profile</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gradient-to-br from-black via-gray-900 to-blue-900 min-h-screen text-white">
+
+  <!-- Navbar -->
+  <nav class="flex justify-center items-center px-10 py-5 bg-black bg-opacity-40 backdrop-blur-lg">
+    <div class="flex items-center space-x-3">
+      <i data-lucide="brain-circuit" class="text-blue-400 w-8 h-8"></i>
+      <h1 class="text-2xl font-extrabold tracking-wide">Career Guru</h1>
+    </div>
+  </nav>
+
+  <!-- Profile Form -->
+  <div class="flex justify-center mt-12">
+    <div class="bg-black bg-opacity-50 backdrop-blur-xl p-10 rounded-2xl shadow-2xl w-[700px]">
+      <h2 class="text-3xl font-bold text-center mb-6">Student Profile</h2>
+      <form id="profileForm" class="space-y-5">
+
+        <!-- Full Name -->
+        <input id="name" type="text" placeholder="Full Name" class="w-full p-3 rounded-lg bg-gray-800 text-white">
+
+        <!-- Email -->
+        <input id="email" type="email" readonly class="w-full p-3 rounded-lg bg-gray-700 text-gray-400 cursor-not-allowed">
+
+        <!-- College -->
+        <input id="college" type="text" placeholder="College / University" class="w-full p-3 rounded-lg bg-gray-800 text-white">
+
+        <!-- Course -->
+        <input id="course" type="text" placeholder="Course Studied (e.g., B.Tech CSE)" class="w-full p-3 rounded-lg bg-gray-800 text-white">
+
+        <!-- CGPA -->
+        <input id="cgpa" type="text" placeholder="CGPA / Percentage" class="w-full p-3 rounded-lg bg-gray-800 text-white">
+
+        <!-- State -->
+        <input id="state" type="text" placeholder="State" class="w-full p-3 rounded-lg bg-gray-800 text-white">
+
+        <!-- Skills -->
+        <textarea id="skills" placeholder="Enter Skills Covered (comma separated, e.g., Python, AI, Web Dev)" class="w-full p-3 rounded-lg bg-gray-800 text-white"></textarea>
+
+        <!-- Career Interests -->
+        <input id="interests" type="text" placeholder="Career Interests (e.g., Data Science, Cybersecurity)" class="w-full p-3 rounded-lg bg-gray-800 text-white">
+
+        <!-- Achievements -->
+        <textarea id="achievements" placeholder="Achievements (comma separated)" class="w-full p-3 rounded-lg bg-gray-800 text-white"></textarea>
+
+        <!-- Goals -->
+        <textarea id="goals" placeholder="Future Career Goals" class="w-full p-3 rounded-lg bg-gray-800 text-white"></textarea>
+
+        <!-- Resources Completed -->
+        <input id="resourcesCompleted" type="number" placeholder="Resources Completed (e.g., 5)" class="w-full p-3 rounded-lg bg-gray-800 text-white">
+
+        <!-- Submit -->
+        <button type="submit" class="w-full bg-blue-600 py-3 rounded-lg font-semibold hover:bg-blue-500 hover:scale-105 transition">Save Profile</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
+    if (!currentUser) {
+      alert("Please login first!");
+      window.location.href = "Login Page.html";
+    } else {
+      document.getElementById("email").value = currentUser.email;
+
+      let profiles = JSON.parse(localStorage.getItem("profiles")) || {};
+      if (profiles[currentUser.email]) {
+        const data = profiles[currentUser.email];
+        for (let key in data) {
+          if (document.getElementById(key)) {
+            if (Array.isArray(data[key])) {
+              document.getElementById(key).value = data[key].join(", ");
+            } else {
+              document.getElementById(key).value = data[key];
+            }
+          }
+        }
+      }
+    }
+
+    document.getElementById("profileForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      let profiles = JSON.parse(localStorage.getItem("profiles")) || {};
+
+      profiles[currentUser.email] = {
+        name: document.getElementById("name").value,
+        email: currentUser.email,
+        college: document.getElementById("college").value,
+        course: document.getElementById("course").value,
+        cgpa: document.getElementById("cgpa").value,
+        state: document.getElementById("state").value,
+        skills: document.getElementById("skills").value.split(",").map(s => s.trim()).filter(s => s),
+        interests: document.getElementById("interests").value,
+        achievements: document.getElementById("achievements").value.split(",").map(a => a.trim()).filter(a => a),
+        goals: document.getElementById("goals").value,
+        resourcesCompleted: document.getElementById("resourcesCompleted").value || 0
+      };
+
+      localStorage.setItem("profiles", JSON.stringify(profiles));
+      alert("Profile saved successfully!");
+      window.location.href = "Dashboard Page.html";
+    });
+  </script>
+</body>
+</html>

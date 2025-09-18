@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Career Guru - Learn Desk</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    /* Glow hover effects */
+    #res1:hover { box-shadow: 0 0 20px #3b82f6; }
+    #res2:hover { box-shadow: 0 0 20px #facc15; }
+    #res3:hover { box-shadow: 0 0 20px #22c55e; }
+    #res4:hover { box-shadow: 0 0 20px #a855f7; }
+    #res5:hover { box-shadow: 0 0 20px #ec4899; }
+    #res6:hover { box-shadow: 0 0 20px #ef4444; }
+    #res7:hover { box-shadow: 0 0 20px #f97316; }
+    #res8:hover { box-shadow: 0 0 20px #06b6d4; }
+    #res9:hover { box-shadow: 0 0 20px #6366f1; }
+    #res10:hover { box-shadow: 0 0 20px #14b8a6; }
+    #res11:hover { box-shadow: 0 0 20px #3b82f6; }
+    #res12:hover { box-shadow: 0 0 20px #22c55e; }
+    #res13:hover { box-shadow: 0 0 20px #ef4444; }
+    #res14:hover { box-shadow: 0 0 20px #eab308; }
+    #res15:hover { box-shadow: 0 0 20px #a855f7; }
+    #res16:hover { box-shadow: 0 0 20px #ec4899; }
+    #res17:hover { box-shadow: 0 0 20px #06b6d4; }
+    #res18:hover { box-shadow: 0 0 20px #6366f1; }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-black via-gray-900 to-blue-900 min-h-screen text-white">
+
+  <!-- Navbar (Logo Only) -->
+  <nav class="flex justify-between items-center px-10 py-5 bg-black bg-opacity-40 backdrop-blur-lg">
+    <div class="flex items-center space-x-3">
+      <i data-lucide="brain-circuit" class="text-blue-400 w-8 h-8"></i>
+      <h1 class="text-2xl font-extrabold tracking-wide">Career Guru</h1>
+    </div>
+    <button onclick="goBack()" class="bg-red-600 px-4 py-2 rounded-lg font-semibold hover:bg-red-500 hover:scale-105 transition">Back</button>
+  </nav>
+
+  <!-- Resources Section -->
+  <div class="px-10 py-10">
+    <h2 class="text-4xl font-bold mb-8 text-center">🚀 Learn Desk - Explore Career Resources</h2>
+
+    <div id="resourcesGrid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- Resource Cards -->
+      <div id="res1" class="resource-card bg-black bg-opacity-50 p-6 rounded-xl shadow-xl hover:scale-105 transition">
+        <i data-lucide="cloud" class="text-blue-400 w-8 h-8 mb-4"></i>
+        <h3 class="text-xl font-semibold mb-2">Google Cloud Badges</h3>
+        <p class="text-gray-300 mb-4">Earn industry-recognized badges to validate your cloud expertise.</p>
+        <a href="https://www.cloudskillsboost.google/" target="_blank" class="inline-block px-4 py-2 bg-blue-600 rounded-lg hover:bg-blue-500 transition">View Course</a>
+      </div>
+
+      <div id="res2" class="resource-card bg-black bg-opacity-50 p-6 rounded-xl shadow-xl hover:scale-105 transition">
+        <i data-lucide="server" class="text-yellow-400 w-8 h-8 mb-4"></i>
+        <h3 class="text-xl font-semibold mb-2">AWS Virtual Internship</h3>
+        <p class="text-gray-300 mb-4">Gain practical cloud experience with AWS-hosted projects and training.</p>
+        <a href="https://aws.amazon.com/training/" target="_blank" class="inline-block px-4 py-2 bg-yellow-500 rounded-lg hover:bg-yellow-400 transition">Apply Now</a>
+      </div>
+
+      <div id="res3" class="resource-card bg-black bg-opacity-50 p-6 rounded-xl shadow-xl hover:scale-105 transition">
+        <i data-lucide="cpu" class="text-green-400 w-8 h-8 mb-4"></i>
+        <h3 class="text-xl font-semibold mb-2">NVIDIA AI Course</h3>
+        <p class="text-gray-300 mb-4">Master AI and deep learning with NVIDIA’s training modules.</p>
+        <a href="https://www.nvidia.com/en-us/training/" target="_blank" class="inline-block px-4 py-2 bg-green-600 rounded-lg hover:bg-green-500 transition">View Course</a>
+      </div>
+
+      <div id="res4" class="resource-card bg-black bg-opacity-50 p-6 rounded-xl shadow-xl hover:scale-105 transition">
+        <i data-lucide="users" class="text-purple-400 w-8 h-8 mb-4"></i>
+        <h3 class="text-xl font-semibold mb-2">NABARD Hackathon</h3>
+        <p class="text-gray-300 mb-4">Innovate solutions for rural development and financial inclusion.</p>
+        <a href="https://www.nabard.org/" target="_blank" class="inline-block px-4 py-2 bg-purple-600 rounded-lg hover:bg-purple-500 transition">Apply Now</a>
+      </div>
+
+      <div id="res5" class="resource-card bg-black bg-opacity-50 p-6 rounded-xl shadow-xl hover:scale-105 transition">
+        <i data-lucide="lightbulb" class="text-pink-400 w-8 h-8 mb-4"></i>
+        <h3 class="text-xl font-semibold mb-2">Smart India Hackathon</h3>
+        <p class="text-gray-300 mb-4">Solve real-world challenges in India’s largest hackathon.</p>
+        <a href="https://www.sih.gov.in/" target="_blank" class="inline-block px-4 py-2 bg-pink-600 rounded-lg hover:bg-pink-500 transition">Apply Now</a>
+      </div>
+
+      <div id="res6" class="resource-card bg-black bg-opacity-50 p-6 rounded-xl shadow-xl hover:scale-105 transition">
+        <i data-lucide="database" class="text-red-400 w-8 h-8 mb-4"></i>
+        <h3 class="text-xl font-semibold mb-2">Oracle Data Science Course</h3>
+        <p class="text-gray-300 mb-4">Learn Data Science concepts using Oracle Cloud tools.</p>
+        <a href="https://education.oracle.com/" target="_blank" class="inline-block px-4 py-2 bg-red-600 rounded-lg hover:bg-red-500 transition">View Course</a>
+      </div>
+
+      <div id="res7" class="resource-card bg-black bg-opacity-50 p-6 rounded-xl shadow-xl hover:scale-105 transition">
+        <i data-lucide="trophy" class="text-orange-400 w-8 h-8 mb-4"></i>
+        <h3 class="text-xl font-semibold mb-2">Tata Crucible Quiz</h3>
+        <p class="text-gray-300 mb-4">Test your knowledge with India’s premier quiz competition.</p>
+        <a href="https://www.tatacrucible.com/" target="_blank" class="inline-block px-4 py-2 bg-orange-600 rounded-lg hover:bg-orange-500 transition">Apply Now</a>
+      </div>
+
+      <div id="res8" class="resource-card bg-black bg-opacity-50 p-6 rounded-xl shadow-xl hover:scale-105 transition">
+        <i data-lucide="briefcase" class="text-cyan-400 w-8 h-8 mb-4"></i>
+        <h3 class="text-xl font-semibold mb-2">JP Morgan Internship</h3>
+        <p class="text-gray-300 mb-4">Gain industry-level corporate experience with JP Morgan.</p>
+        <a href="https://careers.jpmorgan.com/" target="_blank" class="inline-block px-4 py-2 bg-cyan-600 rounded-lg hover:bg-cyan-500 transition">Apply Now</a>
+      </div>
+
+      <div id="res9" class="resource-card bg-black bg-opacity-50 p-6 rounded-xl shadow-xl hover:scale-105 transition">
+        <i data-lucide="book" class="text-indigo-400 w-8 h-8 mb-4"></i>
+        <h3 class="text-xl font-semibold mb-2">TCS iON Program</h3>
+        <p class="text-gray-300 mb-4">Build essential skills with TCS iON industry training.</p>
+        <a href="https://learning.tcsionhub.in/" target="_blank" class="inline-block px-4 py-2 bg-indigo-600 rounded-lg hover:bg-indigo-500 transition">View Course</a>
+      </div>
+
+      <div id="res10" class="resource-card bg-black bg-opacity-50 p-6 rounded-xl shadow-xl hover:scale-105 transition">
+        <i data-lucide="book-open" class="text-teal-400 w-8 h-8 mb-4"></i>
+        <h3 class="text-xl font-semibold mb-2">NPTEL Soft & Core Skills</h3>
+        <p class="text-gray-300 mb-4">Develop both soft and technical skills with NPTEL courses.</p>
+        <a href="https://nptel.ac.in/" target="_blank" class="inline-block px-4 py-2 bg-teal-600 rounded-lg hover:bg-teal-500 transition">View Course</a>
+      </div>
+
+      <div id="res11" class="resource-card bg-black bg-opacity-50 p-6 rounded-xl shadow-xl hover:scale-105 transition">
+        <i data-lucide="graduation-cap" class="text-blue-400 w-8 h-8 mb-4"></i>
+        <h3 class="text-xl font-semibold mb-2">Grow with Google</h3>
+        <p class="text-gray-300 mb-4">Free skill training programs by Google to boost your career.</p>
+        <a href="https://grow.google/" target="_blank" class="inline-block px-4 py-2 bg-blue-600 rounded-lg hover:bg-blue-500 transition">Explore</a>
+      </div>
+
+      <div id="res12" class="resource-card bg-black bg-opacity-50 p-6 rounded-xl shadow-xl hover:scale-105 transition">
+        <i data-lucide="laptop" class="text-green-400 w-8 h-8 mb-4"></i>
+        <h3 class="text-xl font-semibold mb-2">Skill India Digital Hub</h3>
+        <p class="text-gray-300 mb-4">Government initiative offering digital courses and certifications.</p>
+        <a href="https://www.skillindiadigital.gov.in/" target="_blank" class="inline-block px-4 py-2 bg-green-600 rounded-lg hover:bg-green-500 transition">Visit</a>
+      </div>
+
+      <div id="res13" class="resource-card bg-black bg-opacity-50 p-6 rounded-xl shadow-xl hover:scale-105 transition">
+        <i data-lucide="mic" class="text-red-400 w-8 h-8 mb-4"></i>
+        <h3 class="text-xl font-semibold mb-2">TED Talks</h3>
+        <p class="text-gray-300 mb-4">Enhance communication and soft skills with inspiring TED Talks.</p>
+        <a href="https://www.ted.com/talks" target="_blank" class="inline-block px-4 py-2 bg-red-600 rounded-lg hover:bg-red-500 transition">Watch</a>
+      </div>
+
+      <div id="res14" class="resource-card bg-black bg-opacity-50 p-6 rounded-xl shadow-xl hover:scale-105 transition">
+        <i data-lucide="globe" class="text-yellow-400 w-8 h-8 mb-4"></i>
+        <h3 class="text-xl font-semibold mb-2">Coursera Web Development</h3>
+        <p class="text-gray-300 mb-4">Learn modern web development with hands-on Coursera courses.</p>
+        <a href="https://www.coursera.org/courses?query=web%20development" target="_blank" class="inline-block px-4 py-2 bg-yellow-600 rounded-lg hover:bg-yellow-500 transition">Learn</a>
+      </div>
+
+      <div id="res15" class="resource-card bg-black bg-opacity-50 p-6 rounded-xl shadow-xl hover:scale-105 transition">
+        <i data-lucide="cpu" class="text-purple-400 w-8 h-8 mb-4"></i>
+        <h3 class="text-xl font-semibold mb-2">Coursera Generative AI</h3>
+        <p class="text-gray-300 mb-4">Master Generative AI with industry-focused Coursera courses.</p>
+        <a href="https://www.coursera.org/courses?query=generative%20ai" target="_blank" class="inline-block px-4 py-2 bg-purple-600 rounded-lg hover:bg-purple-500 transition">Start</a>
+      </div>
+
+      <div id="res16" class="resource-card bg-black bg-opacity-50 p-6 rounded-xl shadow-xl hover:scale-105 transition">
+        <i data-lucide="shield" class="text-pink-400 w-8 h-8 mb-4"></i>
+        <h3 class="text-xl font-semibold mb-2">HP Life Cybersecurity</h3>
+        <p class="text-gray-300 mb-4">Free cybersecurity training course by HP Life.</p>
+        <a href="https://www.life-global.org/course/83" target="_blank" class="inline-block px-4 py-2 bg-pink-600 rounded-lg hover:bg-pink-500 transition">Enroll</a>
+      </div>
+
+      <div id="res17" class="resource-card bg-black bg-opacity-50 p-6 rounded-xl shadow-xl hover:scale-105 transition">
+        <i data-lucide="code" class="text-cyan-400 w-8 h-8 mb-4"></i>
+        <h3 class="text-xl font-semibold mb-2">Citi Bank Internship</h3>
+        <p class="text-gray-300 mb-4">Software Development Virtual Internship Program.</p>
+        <a href="https://www.theforage.com/virtual-internships/prototype/citi/software-development" target="_blank" class="inline-block px-4 py-2 bg-cyan-600 rounded-lg hover:bg-cyan-500 transition">Apply</a>
+      </div>
+
+      <div id="res18" class="resource-card bg-black bg-opacity-50 p-6 rounded-xl shadow-xl hover:scale-105 transition">
+        <i data-lucide="brain" class="text-indigo-400 w-8 h-8 mb-4"></i>
+        <h3 class="text-xl font-semibold mb-2">IBM Machine Learning</h3>
+        <p class="text-gray-300 mb-4">Industry-recognized IBM Machine Learning specialization.</p>
+        <a href="https://www.coursera.org/professional-certificates/ibm-machine-learning" target="_blank" class="inline-block px-4 py-2 bg-indigo-600 rounded-lg hover:bg-indigo-500 transition">Join</a>
+      </div>
+   </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    function goBack() {
+      window.location.href = "Dashboard Page.html";
+    }
+
+    // Get random n elements from array
+    function getRandomResources(array, count) {
+      let shuffled = array.slice().sort(() => 0.5 - Math.random());
+      return shuffled.slice(0, count);
+    }
+
+    window.onload = () => {
+      const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+      if (!currentUser) {
+        alert("Please login first!");
+        window.location.href = "Landing Page.html";
+        return;
+      }
+
+      // All resource IDs
+      const allResourceIds = ["res1","res2","res3","res4","res5","res6","res7","res8","res9","res10","res11","res12","res13","res14","res15","res16","res17","res18"];
+
+      // Check if user already has selected resources
+      let userResources = JSON.parse(localStorage.getItem("userResources_" + currentUser.email));
+
+      if (!userResources) {
+        // Pick 6 random resources for new user
+        userResources = getRandomResources(allResourceIds, 6);
+        localStorage.setItem("userResources_" + currentUser.email, JSON.stringify(userResources));
+      }
+
+      // Hide all resources first
+      allResourceIds.forEach(id => document.getElementById(id).classList.add("hidden"));
+
+      // Show only selected resources for this user
+      userResources.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.remove("hidden");
+      });
+    }
+  </script>
+</body>
+</html>
