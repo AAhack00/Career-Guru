@@ -130,4 +130,4 @@ This project is licensed under the MIT License 📝
 
 👨‍💻 Team
 
-Made with ❤️ and ☕ during a hackathon! ✨
+Made by Quantaum Hackers ✨
